@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class TileManager : MonoBehaviour
 {
 
     public int x = 0;
@@ -25,6 +25,21 @@ public class NewBehaviourScript : MonoBehaviour
         
     }
 
+    public string getPosition() {
+        return this.x + "," + this.y;
+    }
+
+    public void setVariables(int x, int y, bool isDark) {
+        this.x = x;
+        this.y = y;
+        this.isDark = isDark;
+    }
+
+    public void setPiece(PieceColor color, PieceType type) {
+        PieceManager pieceManager = this.GetComponentInChildren<PieceManager>();
+        pieceManager.setVariables(type, color);
+    }
+
     void OnMouseEnter() {
         Debug.Log("Mouse enter");
 
@@ -33,7 +48,7 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
     void OnMouseExit() {
-        Debug.Log("Mouse exit");
+        Debug.Log("Mouse leave");
         this.GetComponent<SpriteRenderer>().color = this.orignalColor;
     }
 }

@@ -12,4 +12,8 @@ public class StaticHelpers
         return color;
     }
 
+    public static bool isUppercase(string s) {
+        return s.Equals(s.ToUpper());
+    }
+
 }
