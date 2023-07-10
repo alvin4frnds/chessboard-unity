@@ -53,6 +53,21 @@ public class Board : MonoBehaviour
         return tileName;
     }
 
+    public void updatePieceOnTile(string tilename, GameObject piece) {
+
+        GameObject tile = GameObject.Find(tilename);
+        if ( tile == null ) {
+            Debug.Log("Tile not found");
+            return;
+        }
+
+        TileManager tileManager = tile.GetComponent<TileManager>();
+        PieceManager pieceManager = piece.GetComponent<PieceManager>();
+
+        tileManager.setPiece(pieceManager.color, pieceManager.type);
+        // Object.Destroy(piece);        
+    }
+
     void drawBoard() {
         Debug.Log("Drawing board");
 

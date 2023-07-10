@@ -5,10 +5,12 @@ using UnityEngine;
 public class PieceManager : MonoBehaviour
 {
 
-    PieceType type;
-    PieceColor color;
+    public PieceType type;
+    public PieceColor color;
 
     private Vector3 mousePositionOffset;
+    private Vector3 previousPosition;
+    private Vector3 startPosition;
     private string lastBoardPosition = "";
     private string currentBoardPosition = "";
 
@@ -26,6 +28,14 @@ public class PieceManager : MonoBehaviour
     }
 
     public void setVariables(PieceType type, PieceColor color) {
+        if ( type == this.type && color == this.color) {
+            return;
+        }
+
+        if ( type != this.type || color != this.color) {
+            this.resetSprite();
+        }
+
         this.type = type;
         this.color = color;
 
@@ -42,6 +52,7 @@ public class PieceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.startPosition = this.transform.position;
     }
 
     // Update is called once per frame
@@ -55,6 +66,8 @@ public class PieceManager : MonoBehaviour
 
         mousePositionOffset = this.transform.position - GetMouseWorldPosition();
         lastBoardPosition = this.getPositionOnBoard();
+
+        this.previousPosition = this.transform.position;
     }
 
     private void OnMouseDrag() {
@@ -70,7 +83,18 @@ public class PieceManager : MonoBehaviour
         Board board = logicGameObject.GetComponent<Board>();
         string tileName = board.tileNameByCoordinates(this.transform.position.x, this.transform.position.y);
 
+        GameObject parentTile = this.transform.parent.gameObject;
+
         Debug.Log("Tile name: " + tileName);
+
+        if ( tileName == parentTile.name) {
+            this.resetPosition();
+            return;
+        }
+
+        board.updatePieceOnTile(tileName, this.gameObject);
+        TileManager tileManager = this.transform.parent.gameObject.GetComponent<TileManager>();
+        tileManager.setPiece(PieceColor.None, PieceType.None);
     }
 
     private void loadPiece() {
@@ -85,10 +109,15 @@ public class PieceManager : MonoBehaviour
 
         // Set the position of the piece
         // this.transform.position = new Vector3(-0.5f, -0.5f, 0);
+        // this.resetPosition();
     }
 
     private string getPositionOnBoard() {
         return this.GetComponentInParent<TileManager>().getPosition();
+    }
+
+    private void resetPosition() {
+        this.transform.position = this.previousPosition;
     }
 }
 
