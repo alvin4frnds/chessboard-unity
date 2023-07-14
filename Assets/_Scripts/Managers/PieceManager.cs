@@ -89,13 +89,20 @@ public class PieceManager : MonoBehaviour
         }
 
         this.transform.position = this.previousPosition;
+        GameObject targetTile = GameObject.Find(tileName);
+        GameObject targetPiece = targetTile.transform.GetChild(0).gameObject;
+        PieceManager targetPieceManager = targetPiece.GetComponent<PieceManager>();
+
+        bool isTargetPiece = targetPieceManager.color != PieceColor.None;
 
         MoveMaker moveMaker = board.getMoveMaker();
-        moveMaker.makeMove(lastBoardPosition + "-" + tileName);
+        moveMaker.makeMove(lastBoardPosition + (isTargetPiece ? "x" : "") + tileName, new Piece(this.type, this.color));
 
         board.updatePieceOnTile(tileName, this.gameObject);
+
         TileManager tileManager = this.transform.parent.gameObject.GetComponent<TileManager>();
         tileManager.setPiece(PieceColor.None, PieceType.None);
+        board.printFENNotation();
     }
 
     private void loadPiece() {
@@ -150,4 +157,14 @@ public enum PieceColor {
     White,
     Black,
     None
+}
+
+public class Piece {
+    public PieceType type;
+    public PieceColor color;
+
+    public Piece(PieceType type, PieceColor color) {
+        this.type = type;
+        this.color = color;
+    }
 }

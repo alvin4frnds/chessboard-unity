@@ -15,6 +15,8 @@ public class Board : MonoBehaviour
 
     public Constants Constants = new Constants();
     private MoveMaker moveMaker;
+    private FENNotations fenNotations = new FENNotations();
+    private GameVars gameVars = new GameVars();
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,7 @@ public class Board : MonoBehaviour
 
         moveMaker = new MoveMaker();
         moveMaker.setBoard(board);
+        moveMaker.setGameVars(gameVars);
         moveMaker.setTitleText(titleText);
     }
 
@@ -37,9 +40,14 @@ public class Board : MonoBehaviour
     }
 
     void setInitialPieces() {
-        FENNotations fen = new FENNotations();
+        fenNotations.setGameVars(gameVars);
+        fenNotations.FENNotationToBoard(board, FENNotations.defaultFENNotation);
+    }
 
-        fen.FENNotationToBoard(board, FENNotations.defaultFENNotation);
+    public void printFENNotation() {
+        string fenNotation = fenNotations.toFENNotation(board);
+
+        Debug.Log(fenNotation);
     }
 
     void initiateVariables() {
@@ -129,3 +137,4 @@ public class Board : MonoBehaviour
 
     }
 }
+
