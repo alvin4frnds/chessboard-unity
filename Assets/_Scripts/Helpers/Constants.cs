@@ -12,5 +12,8 @@ public class Constants
     public float TileSize = 1.25f;
     public float TileOffset = 4.375f;
 
+    public static string[] files = new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
+    public static string[] ranks = new string[] { "1", "2", "3", "4", "5", "6", "7", "8" };
+
     
 }

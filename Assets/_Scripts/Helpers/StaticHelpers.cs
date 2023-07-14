@@ -16,4 +16,8 @@ public class StaticHelpers
         return s.Equals(s.ToUpper());
     }
 
+    public static string getTileName(int x, int y) {
+        return Constants.files[y] + Constants.ranks[7 - x];
+    }
+
 }

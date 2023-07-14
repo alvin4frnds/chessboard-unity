@@ -1,27 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Board : MonoBehaviour
 {
 
     public GameObject boardPrefab;
     public GameObject tilePrefab;
+    public TMP_Text titleText;
 
     private GameObject board;
-
     private Color greenColor;
 
     public Constants Constants = new Constants();
+    private MoveMaker moveMaker;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+           
         this.initiateVariables();
         this.drawBoard();
 
         this.setInitialPieces();        
+
+        moveMaker = new MoveMaker();
+        moveMaker.setBoard(board);
+        moveMaker.setTitleText(titleText);
     }
 
     // Update is called once per frame
@@ -48,6 +54,10 @@ public class Board : MonoBehaviour
 
     }
 
+    public MoveMaker getMoveMaker() {
+        return moveMaker;
+    }
+
     public string tileNameByCoordinates(float x, float y) {
         string tileName = "";
 
@@ -55,6 +65,8 @@ public class Board : MonoBehaviour
         for ( int i = 0; i < board.transform.childCount; i++ ) {
             GameObject tile = board.transform.GetChild(i).gameObject;
             if ( x > tile.transform.position.x - Constants.TileSize / 2 && x < tile.transform.position.x + Constants.TileSize / 2 && y > tile.transform.position.y - Constants.TileSize / 2 && y < tile.transform.position.y + Constants.TileSize / 2 ) {
+                
+
                 tileName = tile.name;
                 break;
             }
@@ -67,7 +79,7 @@ public class Board : MonoBehaviour
 
         GameObject tile = GameObject.Find(tilename);
         if ( tile == null ) {
-            Debug.Log("Tile not found");
+            Debug.Log("Tile not found " + tilename);
             return;
         }
 
@@ -95,7 +107,7 @@ public class Board : MonoBehaviour
 
                 GameObject tile = Instantiate(tilePrefab, new Vector3(xPos, yPos, 0), Quaternion.identity);
 
-                tile.name = "Tile#" + x + "," + y;
+                tile.name = "Tile#" + StaticHelpers.getTileName(x, y);
                 tile.tag = "Tile";
                 tile.SetActive(true);
                 bool isDark =  (x + y) % 2 == 0;

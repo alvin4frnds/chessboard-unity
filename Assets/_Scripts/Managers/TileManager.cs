@@ -28,7 +28,7 @@ public class TileManager : MonoBehaviour
     }
 
     public string getPosition() {
-        return this.x + "," + this.y;
+        return StaticHelpers.getTileName(x, y);
     }
 
     public void setVariables(int x, int y, bool isDark) {

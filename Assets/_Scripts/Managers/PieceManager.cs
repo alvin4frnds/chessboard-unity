@@ -15,7 +15,6 @@ public class PieceManager : MonoBehaviour
     private string lastBoardPosition = "";
     private string currentBoardPosition = "";
 
-
     public string imagePath = "";
 
     private Vector3 GetMouseWorldPosition() {
@@ -72,8 +71,6 @@ public class PieceManager : MonoBehaviour
     }
 
     private void OnMouseDrag() {
-        Debug.Log("Mouse drag");
-
         this.transform.position = GetMouseWorldPosition() + mousePositionOffset;
     }
 
@@ -86,12 +83,15 @@ public class PieceManager : MonoBehaviour
 
         GameObject parentTile = this.transform.parent.gameObject;
 
-        Debug.Log("Tile name: " + tileName);
-
         if ( tileName == parentTile.name) {
             this.resetPosition();
             return;
         }
+
+        this.transform.position = this.previousPosition;
+
+        MoveMaker moveMaker = board.getMoveMaker();
+        moveMaker.makeMove(lastBoardPosition + "-" + tileName);
 
         board.updatePieceOnTile(tileName, this.gameObject);
         TileManager tileManager = this.transform.parent.gameObject.GetComponent<TileManager>();
