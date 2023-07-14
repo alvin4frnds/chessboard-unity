@@ -12,6 +12,8 @@ public class TileManager : MonoBehaviour
     private Color highLightColor;
     private Color orignalColor;
 
+    public Constants Constants = new Constants();
+
     // Start is called before the first frame update
     void Start()
     {

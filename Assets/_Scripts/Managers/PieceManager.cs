@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class PieceManager : MonoBehaviour
 {
@@ -106,10 +107,6 @@ public class PieceManager : MonoBehaviour
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         SpriteRenderer spriteRenderer = this.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprite;
-
-        // Set the position of the piece
-        // this.transform.position = new Vector3(-0.5f, -0.5f, 0);
-        // this.resetPosition();
     }
 
     private string getPositionOnBoard() {
@@ -120,6 +117,24 @@ public class PieceManager : MonoBehaviour
         this.transform.position = this.previousPosition;
     }
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(PieceManager))]
+
+public class PieceManagerEditor: Editor {
+    public override void OnInspectorGUI() {
+        PieceManager pieceManager = (PieceManager)target;
+
+        DrawDefaultInspector();
+
+        if ( GUILayout.Button("Set Piece") ) {
+            pieceManager.setVariables(pieceManager.type, pieceManager.color);
+        }
+    }
+}
+
+#endif
 
 public enum PieceType {
     Pawn,

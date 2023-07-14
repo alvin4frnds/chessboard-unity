@@ -12,6 +12,8 @@ public class Board : MonoBehaviour
 
     private Color greenColor;
 
+    public Constants Constants = new Constants();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,14 @@ public class Board : MonoBehaviour
 
     void initiateVariables() {
         greenColor = StaticHelpers.fromHex(Constants.Color_boardGreen);
+
+        Vector3 unityMax = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+
+        Constants.BoardSize = unityMax.x * 2;
+        Constants.TileSize = Constants.BoardSize / 8;
+        Constants.TileOffset = Constants.TileSize * 4 - (Constants.TileSize / 2);
+
+
     }
 
     public string tileNameByCoordinates(float x, float y) {
@@ -102,6 +112,8 @@ public class Board : MonoBehaviour
                 sprite.color = isDark ? Color.white : greenColor;
             }
         }
+
+        board.transform.Rotate(0, 0, -90);
 
     }
 }
